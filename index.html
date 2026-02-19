@@ -521,33 +521,33 @@
 
     <!-- ===== エージェント ===== -->
     <div class="page" id="page-agents">
-        <div class="section-title">AIエージェント編成</div>
+        <div class="section-title">AI Agent Organization</div>
 
         <div class="grid grid-4" style="margin-bottom:24px">
             <div class="card">
-                <div class="card-title">配備済み</div>
+                <div class="card-title">Deployed</div>
                 <div class="stat-value" id="agent-deployed">—</div>
             </div>
             <div class="card">
-                <div class="card-title">稼働中</div>
+                <div class="card-title">Active</div>
                 <div class="stat-value" id="agent-active">—</div>
             </div>
             <div class="card">
-                <div class="card-title">計画中</div>
+                <div class="card-title">Planned</div>
                 <div class="stat-value" id="agent-planned">—</div>
             </div>
             <div class="card">
-                <div class="card-title">全エージェント</div>
+                <div class="card-title">Total Agents</div>
                 <div class="stat-value" id="agent-total">—</div>
             </div>
         </div>
 
         <div class="card" style="margin-bottom:16px">
-            <div class="section-title">司令部エージェント</div>
+            <div class="section-title">HQ Agents</div>
             <table>
                 <thead>
                     <tr>
-                        <th>軍隊の役割</th>
+                        <th>Role</th>
                         <th>エージェント</th>
                         <th>責務</th>
                         <th>権限</th>
@@ -560,11 +560,11 @@
         </div>
 
         <div class="card" style="margin-bottom:16px">
-            <div class="section-title">中隊エージェント（ユニットごとに配備）</div>
+            <div class="section-title">Unit Agents (per unit)</div>
             <table>
                 <thead>
                     <tr>
-                        <th>軍隊の役割</th>
+                        <th>Role</th>
                         <th>エージェント</th>
                         <th>責務</th>
                         <th>権限</th>
@@ -577,11 +577,11 @@
         </div>
 
         <div class="card">
-            <div class="section-title">兵士エージェント（社員ごとに配備）</div>
+            <div class="section-title">Soldier Agents (per member)</div>
             <table>
                 <thead>
                     <tr>
-                        <th>軍隊の役割</th>
+                        <th>Role</th>
                         <th>エージェント</th>
                         <th>責務</th>
                         <th>権限</th>
@@ -772,8 +772,8 @@ const DATA = {
     agents: [
         {
             tier: "hq",
-            role: "統括参謀",
-            name: "Chief of Staff",
+            role: "Chief of Staff",
+            name: "統括参謀",
             duty: "全情報集約・横断分析・意思決定支援",
             authority: "提案のみ",
             status: "active",
@@ -782,8 +782,8 @@ const DATA = {
         },
         {
             tier: "hq",
-            role: "連絡将校",
-            name: "Liaison Officer",
+            role: "Liaison Officer",
+            name: "連絡将校",
             duty: "上申・下達のルーティング・ユニット間横連携",
             authority: "通信配信のみ",
             status: "planned",
@@ -792,8 +792,8 @@ const DATA = {
         },
         {
             tier: "hq",
-            role: "監察官",
-            name: "Inspector General",
+            role: "Inspector General",
+            name: "監察官",
             duty: "品質監査・異常検知・パフォーマンス監視",
             authority: "報告のみ（独立ライン）",
             status: "planned",
@@ -802,8 +802,8 @@ const DATA = {
         },
         {
             tier: "hq",
-            role: "憲兵隊",
-            name: "Military Police",
+            role: "Military Police",
+            name: "憲兵隊",
             duty: "セキュリティ・AIガードレール・コンプライアンス",
             authority: "即時ブロック権限あり",
             status: "planned",
@@ -812,8 +812,8 @@ const DATA = {
         },
         {
             tier: "unit",
-            role: "中隊参謀",
-            name: "Unit Advisor",
+            role: "Unit Advisor",
+            name: "中隊参謀",
             duty: "ユニット内情報集約・リーダー判断支援",
             authority: "提案のみ",
             status: "active",
@@ -822,8 +822,8 @@ const DATA = {
         },
         {
             tier: "unit",
-            role: "中隊伝令",
-            name: "Unit Courier",
+            role: "Unit Courier",
+            name: "中隊伝令",
             duty: "ユニット内通信管理・質問ルーティング・指示展開",
             authority: "通信配信のみ",
             status: "planned",
@@ -832,8 +832,8 @@ const DATA = {
         },
         {
             tier: "unit",
-            role: "中隊監察",
-            name: "Unit Monitor",
+            role: "Unit Monitor",
+            name: "中隊監察",
             duty: "日報チェック・タスク期限監視・負荷アラート",
             authority: "報告のみ",
             status: "planned",
@@ -842,8 +842,8 @@ const DATA = {
         },
         {
             tier: "soldier",
-            role: "個人参謀",
-            name: "Personal Advisor",
+            role: "Personal Advisor",
+            name: "個人参謀",
             duty: "日報作成支援・タスク管理・質問整理",
             authority: "提案のみ（社員が確認後に実行）",
             status: "active",
@@ -1166,7 +1166,7 @@ function renderAgents() {
         const tbody = document.getElementById(tableId);
         tbody.innerHTML = agents.filter(a => a.tier === tier).map(a => {
             const statusBadge = a.status === 'active' ? 'badge-green' : 'badge-yellow';
-            const statusText = a.status === 'active' ? '稼働中' : '計画中';
+            const statusText = a.status === 'active' ? 'Active' : 'Planned';
             const authorityBadge = a.authority.includes('即時') ? 'badge-red' : a.authority.includes('独立') ? 'badge-purple' : 'badge-blue';
             return `<tr>
                 <td><strong>${a.role}</strong></td>
