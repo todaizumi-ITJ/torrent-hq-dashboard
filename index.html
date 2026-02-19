@@ -308,6 +308,7 @@
     <div class="nav-tab" data-page="units">ユニット一覧</div>
     <div class="nav-tab" data-page="unit-a">ユニットA</div>
     <div class="nav-tab" data-page="comm">通信状況</div>
+    <div class="nav-tab" data-page="discussions">ディスカッション</div>
     <div class="nav-tab" data-page="timeline">タイムライン</div>
 </div>
 
@@ -461,6 +462,59 @@
                 </thead>
                 <tbody id="table-comm-log"></tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- ===== ディスカッション ===== -->
+    <div class="page" id="page-discussions">
+        <div class="section-title">ディスカッション</div>
+
+        <div class="grid grid-4" style="margin-bottom:24px">
+            <div class="card">
+                <div class="card-title">進行中</div>
+                <div class="stat-value" id="disc-active">—</div>
+            </div>
+            <div class="card">
+                <div class="card-title">回答待ち</div>
+                <div class="stat-value" id="disc-pending">—</div>
+            </div>
+            <div class="card">
+                <div class="card-title">合意済み</div>
+                <div class="stat-value" id="disc-agreed">—</div>
+            </div>
+            <div class="card">
+                <div class="card-title">総件数</div>
+                <div class="stat-value" id="disc-total">—</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+            <div class="section-title">最近のディスカッション</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>件名</th>
+                        <th>発信者</th>
+                        <th>宛先</th>
+                        <th>ステータス</th>
+                        <th>日付</th>
+                    </tr>
+                </thead>
+                <tbody id="table-discussions"></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="section-title">旧ダッシュボード（詳細ビュー）</div>
+            <div style="padding:16px;text-align:center">
+                <a href="old-hq.html" style="color:var(--accent);font-size:14px;text-decoration:underline" target="_blank">
+                    Torrent HQ — Discussion Dashboard を開く
+                </a>
+                <div style="color:var(--text-muted);font-size:12px;margin-top:8px">
+                    吉田さんとのエージェント間ディスカッションの全文表示（パスワード保護）
+                </div>
+            </div>
         </div>
     </div>
 
@@ -639,6 +693,90 @@ const DATA = {
         broadcast: []
     },
 
+    discussions: [
+        {
+            id: "260219-009",
+            title: "戸田側スキルファイルの共有",
+            from: "戸田",
+            to: "吉田昭弘",
+            status: "回答待ち",
+            date: "2026-02-19",
+            unit: "unit-a"
+        },
+        {
+            id: "260219-008",
+            title: "エージェントのスキル整備のお願い",
+            from: "戸田",
+            to: "吉田昭弘",
+            status: "回答待ち",
+            date: "2026-02-19",
+            unit: "unit-a"
+        },
+        {
+            id: "hdb-admin",
+            title: "HDB 1日限定管理権限の提案",
+            from: "吉田昭弘",
+            to: "今泉",
+            status: "回答済み",
+            date: "2026-02-19",
+            unit: "unit-a"
+        },
+        {
+            id: "agent-start",
+            title: "エージェント同士のやり取りの始め方",
+            from: "戸田",
+            to: "吉田昭弘",
+            status: "完了",
+            date: "2026-02-18",
+            unit: "unit-a"
+        },
+        {
+            id: "agree-realtime",
+            title: "HDB リアルタイム名寄せ（重複排除）",
+            from: "—",
+            to: "—",
+            status: "合意",
+            date: "2026-02-18",
+            unit: "unit-a"
+        },
+        {
+            id: "agree-techstack",
+            title: "技術スタック・方針",
+            from: "—",
+            to: "—",
+            status: "合意",
+            date: "2026-02-17",
+            unit: "unit-a"
+        },
+        {
+            id: "gmail-impl",
+            title: "Gmail 通知・送信機能の実装依頼",
+            from: "戸田",
+            to: "吉田昭弘",
+            status: "進行中",
+            date: "2026-02-18",
+            unit: "unit-a"
+        },
+        {
+            id: "top-menu",
+            title: "トップメニュー（統一ポータル）の提案",
+            from: "戸田",
+            to: "吉田昭弘",
+            status: "進行中",
+            date: "2026-02-17",
+            unit: "unit-a"
+        },
+        {
+            id: "torrent-db",
+            title: "トレントDB群の現状確認と提案",
+            from: "戸田",
+            to: "吉田昭弘",
+            status: "進行中",
+            date: "2026-02-16",
+            unit: "unit-a"
+        }
+    ],
+
     timeline: [
         { time: "09:30", content: "田中太郎が日報を提出", unit: "unit-a" },
         { time: "09:25", content: "エスカレーション: 鈴木さんの日報未提出（2日連続）", unit: "unit-a" },
@@ -662,6 +800,7 @@ function init() {
     renderUnits();
     renderUnitA();
     renderComm();
+    renderDiscussions();
     renderTimeline();
     initNav();
 }
@@ -849,6 +988,39 @@ function renderComm() {
             </tr>`;
         }).join('');
     }
+}
+
+// --- ディスカッション ---
+
+function renderDiscussions() {
+    const disc = DATA.discussions;
+    const active = disc.filter(d => d.status === '進行中').length;
+    const pending = disc.filter(d => d.status === '回答待ち').length;
+    const agreed = disc.filter(d => d.status === '合意').length;
+
+    document.getElementById('disc-active').textContent = active;
+    document.getElementById('disc-pending').textContent = pending;
+    document.getElementById('disc-agreed').textContent = agreed;
+    document.getElementById('disc-total').textContent = disc.length;
+
+    const tbody = document.getElementById('table-discussions');
+    tbody.innerHTML = disc.map(d => {
+        const statusMap = {
+            '回答待ち': 'badge-yellow',
+            '回答済み': 'badge-green',
+            '進行中': 'badge-blue',
+            '合意': 'badge-purple',
+            '完了': 'badge-green'
+        };
+        return `<tr>
+            <td style="font-family:monospace;font-size:12px;color:var(--text-muted)">${d.id}</td>
+            <td><strong>${d.title}</strong></td>
+            <td>${d.from}</td>
+            <td>${d.to}</td>
+            <td><span class="badge ${statusMap[d.status] || 'badge-blue'}">${d.status}</span></td>
+            <td style="font-size:12px;color:var(--text-muted)">${d.date}</td>
+        </tr>`;
+    }).join('');
 }
 
 // --- タイムライン ---
