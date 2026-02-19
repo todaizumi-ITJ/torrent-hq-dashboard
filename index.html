@@ -309,6 +309,7 @@
     <div class="nav-tab" data-page="unit-a">ユニットA</div>
     <div class="nav-tab" data-page="comm">通信状況</div>
     <div class="nav-tab" data-page="discussions">ディスカッション</div>
+    <div class="nav-tab" data-page="agents">エージェント</div>
     <div class="nav-tab" data-page="timeline">タイムライン</div>
 </div>
 
@@ -518,6 +519,81 @@
         </div>
     </div>
 
+    <!-- ===== エージェント ===== -->
+    <div class="page" id="page-agents">
+        <div class="section-title">AIエージェント編成</div>
+
+        <div class="grid grid-4" style="margin-bottom:24px">
+            <div class="card">
+                <div class="card-title">配備済み</div>
+                <div class="stat-value" id="agent-deployed">—</div>
+            </div>
+            <div class="card">
+                <div class="card-title">稼働中</div>
+                <div class="stat-value" id="agent-active">—</div>
+            </div>
+            <div class="card">
+                <div class="card-title">計画中</div>
+                <div class="stat-value" id="agent-planned">—</div>
+            </div>
+            <div class="card">
+                <div class="card-title">全エージェント</div>
+                <div class="stat-value" id="agent-total">—</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+            <div class="section-title">司令部エージェント</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>軍隊の役割</th>
+                        <th>エージェント</th>
+                        <th>責務</th>
+                        <th>権限</th>
+                        <th>ステータス</th>
+                        <th>Phase</th>
+                    </tr>
+                </thead>
+                <tbody id="table-agents-hq"></tbody>
+            </table>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+            <div class="section-title">中隊エージェント（ユニットごとに配備）</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>軍隊の役割</th>
+                        <th>エージェント</th>
+                        <th>責務</th>
+                        <th>権限</th>
+                        <th>ステータス</th>
+                        <th>Phase</th>
+                    </tr>
+                </thead>
+                <tbody id="table-agents-unit"></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="section-title">兵士エージェント（社員ごとに配備）</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>軍隊の役割</th>
+                        <th>エージェント</th>
+                        <th>責務</th>
+                        <th>権限</th>
+                        <th>ステータス</th>
+                        <th>Phase</th>
+                    </tr>
+                </thead>
+                <tbody id="table-agents-soldier"></tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- ===== タイムライン ===== -->
     <div class="page" id="page-timeline">
         <div class="section-title">今日のタイムライン</div>
@@ -693,6 +769,89 @@ const DATA = {
         broadcast: []
     },
 
+    agents: [
+        {
+            tier: "hq",
+            role: "統括参謀",
+            name: "Chief of Staff",
+            duty: "全情報集約・横断分析・意思決定支援",
+            authority: "提案のみ",
+            status: "active",
+            phase: 0,
+            skill: "chief-of-staff/"
+        },
+        {
+            tier: "hq",
+            role: "連絡将校",
+            name: "Liaison Officer",
+            duty: "上申・下達のルーティング・ユニット間横連携",
+            authority: "通信配信のみ",
+            status: "planned",
+            phase: 1,
+            skill: "liaison-officer/"
+        },
+        {
+            tier: "hq",
+            role: "監察官",
+            name: "Inspector General",
+            duty: "品質監査・異常検知・パフォーマンス監視",
+            authority: "報告のみ（独立ライン）",
+            status: "planned",
+            phase: 2,
+            skill: "inspector-general/"
+        },
+        {
+            tier: "hq",
+            role: "憲兵隊",
+            name: "Military Police",
+            duty: "セキュリティ・AIガードレール・コンプライアンス",
+            authority: "即時ブロック権限あり",
+            status: "planned",
+            phase: 3,
+            skill: "military-police/"
+        },
+        {
+            tier: "unit",
+            role: "中隊参謀",
+            name: "Unit Advisor",
+            duty: "ユニット内情報集約・リーダー判断支援",
+            authority: "提案のみ",
+            status: "active",
+            phase: 0,
+            skill: "unit-advisor/"
+        },
+        {
+            tier: "unit",
+            role: "中隊伝令",
+            name: "Unit Courier",
+            duty: "ユニット内通信管理・質問ルーティング・指示展開",
+            authority: "通信配信のみ",
+            status: "planned",
+            phase: 1,
+            skill: "unit-courier/"
+        },
+        {
+            tier: "unit",
+            role: "中隊監察",
+            name: "Unit Monitor",
+            duty: "日報チェック・タスク期限監視・負荷アラート",
+            authority: "報告のみ",
+            status: "planned",
+            phase: 2,
+            skill: "unit-monitor/"
+        },
+        {
+            tier: "soldier",
+            role: "個人参謀",
+            name: "Personal Advisor",
+            duty: "日報作成支援・タスク管理・質問整理",
+            authority: "提案のみ（社員が確認後に実行）",
+            status: "active",
+            phase: 0,
+            skill: "personal-advisor/"
+        }
+    ],
+
     discussions: [
         {
             id: "260219-009",
@@ -801,6 +960,7 @@ function init() {
     renderUnitA();
     renderComm();
     renderDiscussions();
+    renderAgents();
     renderTimeline();
     initNav();
 }
@@ -988,6 +1148,40 @@ function renderComm() {
             </tr>`;
         }).join('');
     }
+}
+
+// --- エージェント ---
+
+function renderAgents() {
+    const agents = DATA.agents;
+    const deployed = agents.filter(a => a.status === 'active').length;
+    const planned = agents.filter(a => a.status === 'planned').length;
+
+    document.getElementById('agent-deployed').textContent = deployed;
+    document.getElementById('agent-active').textContent = deployed;
+    document.getElementById('agent-planned').textContent = planned;
+    document.getElementById('agent-total').textContent = agents.length;
+
+    function renderTable(tableId, tier) {
+        const tbody = document.getElementById(tableId);
+        tbody.innerHTML = agents.filter(a => a.tier === tier).map(a => {
+            const statusBadge = a.status === 'active' ? 'badge-green' : 'badge-yellow';
+            const statusText = a.status === 'active' ? '稼働中' : '計画中';
+            const authorityBadge = a.authority.includes('即時') ? 'badge-red' : a.authority.includes('独立') ? 'badge-purple' : 'badge-blue';
+            return `<tr>
+                <td><strong>${a.role}</strong></td>
+                <td style="font-size:13px;color:var(--text-muted)">${a.name}</td>
+                <td>${a.duty}</td>
+                <td><span class="badge ${authorityBadge}">${a.authority}</span></td>
+                <td><span class="badge ${statusBadge}">${statusText}</span></td>
+                <td style="font-family:monospace">Phase ${a.phase}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    renderTable('table-agents-hq', 'hq');
+    renderTable('table-agents-unit', 'unit');
+    renderTable('table-agents-soldier', 'soldier');
 }
 
 // --- ディスカッション ---
