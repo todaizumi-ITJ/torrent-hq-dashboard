@@ -305,8 +305,8 @@
 
 <div class="nav" id="nav">
     <div class="nav-tab active" data-page="overview">全体概況</div>
-    <div class="nav-tab" data-page="units">ユニット一覧</div>
-    <div class="nav-tab" data-page="unit-a">ユニットA</div>
+    <div class="nav-tab" data-page="units">チーム一覧</div>
+    <div class="nav-tab" data-page="unit-a">チームA</div>
     <div class="nav-tab" data-page="comm">通信状況</div>
     <div class="nav-tab" data-page="discussions">ディスカッション</div>
     <div class="nav-tab" data-page="agents">エージェント</div>
@@ -324,7 +324,7 @@
             <div class="card">
                 <div class="card-title">総兵力</div>
                 <div class="stat-value" id="stat-total-members">—</div>
-                <div class="stat-sub" id="stat-total-units">— ユニット</div>
+                <div class="stat-sub" id="stat-total-units">— チーム</div>
             </div>
             <div class="card">
                 <div class="card-title">今日の日報提出率</div>
@@ -772,8 +772,8 @@ const DATA = {
     agents: [
         {
             tier: "hq",
-            role: "Chief of Staff",
-            name: "統括参謀",
+            role: "業務統括AI",
+            name: "業務統括AI",
             duty: "全情報集約・横断分析・意思決定支援",
             authority: "提案のみ",
             status: "active",
@@ -782,9 +782,9 @@ const DATA = {
         },
         {
             tier: "hq",
-            role: "Liaison Officer",
-            name: "連絡将校",
-            duty: "上申・下達のルーティング・ユニット間横連携",
+            role: "連絡調整AI",
+            name: "連絡調整AI",
+            duty: "エスカレーション・指示のルーティング・チーム間横連携",
             authority: "通信配信のみ",
             status: "planned",
             phase: 1,
@@ -792,9 +792,9 @@ const DATA = {
         },
         {
             tier: "hq",
-            role: "Inspector General",
-            name: "監察官",
-            duty: "品質監査・異常検知・パフォーマンス監視",
+            role: "品質管理AI",
+            name: "品質管理AI",
+            duty: "品質確認・異常検知・進捗監視",
             authority: "報告のみ（独立ライン）",
             status: "planned",
             phase: 2,
@@ -802,9 +802,9 @@ const DATA = {
         },
         {
             tier: "hq",
-            role: "Military Police",
-            name: "憲兵隊",
-            duty: "セキュリティ・AIガードレール・コンプライアンス",
+            role: "コンプライアンスAI",
+            name: "コンプライアンスAI",
+            duty: "セキュリティ・AIガードレール・個人情報管理",
             authority: "即時ブロック権限あり",
             status: "planned",
             phase: 3,
@@ -812,9 +812,9 @@ const DATA = {
         },
         {
             tier: "unit",
-            role: "Unit Advisor",
-            name: "中隊参謀",
-            duty: "ユニット内情報集約・リーダー判断支援",
+            role: "チームアドバイザーAI",
+            name: "チームアドバイザーAI",
+            duty: "チーム内情報集約・リーダー判断支援",
             authority: "提案のみ",
             status: "active",
             phase: 0,
@@ -822,9 +822,9 @@ const DATA = {
         },
         {
             tier: "unit",
-            role: "Unit Courier",
-            name: "中隊伝令",
-            duty: "ユニット内通信管理・質問ルーティング・指示展開",
+            role: "連絡担当AI",
+            name: "連絡担当AI",
+            duty: "チーム内通信管理・質問ルーティング・指示展開",
             authority: "通信配信のみ",
             status: "planned",
             phase: 1,
@@ -832,8 +832,8 @@ const DATA = {
         },
         {
             tier: "unit",
-            role: "Unit Monitor",
-            name: "中隊監察",
+            role: "進捗管理AI",
+            name: "進捗管理AI",
             duty: "日報チェック・タスク期限監視・負荷アラート",
             authority: "報告のみ",
             status: "planned",
@@ -842,10 +842,10 @@ const DATA = {
         },
         {
             tier: "soldier",
-            role: "Personal Advisor",
-            name: "個人参謀",
+            role: "担当者サポートAI",
+            name: "担当者サポートAI",
             duty: "日報作成支援・タスク管理・質問整理",
-            authority: "提案のみ（社員が確認後に実行）",
+            authority: "提案のみ（スタッフが確認後に実行）",
             status: "active",
             phase: 0,
             skill: "personal-advisor/"
